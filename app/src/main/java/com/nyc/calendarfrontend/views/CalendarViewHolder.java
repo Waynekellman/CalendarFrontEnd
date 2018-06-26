@@ -1,9 +1,13 @@
-package com.nyc.calendarfrontend;
+package com.nyc.calendarfrontend.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.nyc.calendarfrontend.models.EventModel;
+import com.nyc.calendarfrontend.R;
+import com.nyc.calendarfrontend.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +35,7 @@ public class CalendarViewHolder extends RecyclerView.ViewHolder {
     public void onBind(int dayNum, Map<Integer, List<EventModel>> eventModelList) {
         day.setText(String.valueOf(dayNum));
         setEventsPerDayUi(dayNum, eventModelList);
-        
+
     }
 
     private void setEventsPerDayUi(int dayNum, Map<Integer, List<EventModel>> eventModelList) {

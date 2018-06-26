@@ -1,16 +1,14 @@
-package com.nyc.calendarfrontend;
-
-import java.util.List;
+package com.nyc.calendarfrontend.models;
 
 /**
- * Created by Wayne Kellman on 6/21/18.
+ * Created by Wayne Kellman on 6/26/18.
  */
 
-public class EventResponse {
+public class EventPostedResponse {
 
     private String status;
     private String message;
-    private List<EventModel> data;
+    private EventModel data;
 
     public String getStatus() {
         return status;
@@ -20,7 +18,7 @@ public class EventResponse {
         return message;
     }
 
-    public List<EventModel> getData() {
+    public EventModel getData() {
         return data;
     }
 }

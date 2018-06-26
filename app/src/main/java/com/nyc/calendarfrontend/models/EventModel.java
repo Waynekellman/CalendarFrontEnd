@@ -1,10 +1,13 @@
-package com.nyc.calendarfrontend;
+package com.nyc.calendarfrontend.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Wayne Kellman on 6/21/18.
  */
 
-class EventModel {
+public class EventModel implements Parcelable {
 
     private String title;
     private String body;
@@ -19,6 +22,26 @@ class EventModel {
         this.day = day;
         this.time = time;
     }
+
+    protected EventModel(Parcel in) {
+        title = in.readString();
+        body = in.readString();
+        month = in.readString();
+        day = in.readInt();
+        time = in.readString();
+    }
+
+    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
+        @Override
+        public EventModel createFromParcel(Parcel in) {
+            return new EventModel(in);
+        }
+
+        @Override
+        public EventModel[] newArray(int size) {
+            return new EventModel[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -54,5 +77,19 @@ class EventModel {
             return times[1];
         }
         return "no end time";
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(body);
+        dest.writeString(month);
+        dest.writeInt(day);
+        dest.writeString(time);
     }
 }

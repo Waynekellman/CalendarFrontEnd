@@ -1,10 +1,16 @@
-package com.nyc.calendarfrontend;
+package com.nyc.calendarfrontend.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import com.nyc.calendarfrontend.CalendarApplication;
+import com.nyc.calendarfrontend.CalendarComponent;
+import com.nyc.calendarfrontend.CalendarNetwork;
+import com.nyc.calendarfrontend.models.EventModel;
+import com.nyc.calendarfrontend.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +19,6 @@ import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable compositeDisposable;
     private CalendarNetwork service;
     private CalendarComponent component;
-    private CalendarAdapter calendarAdapter;
+    private CalendarAdapter calendarAdapter = new CalendarAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +46,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        calendarAdapter = new CalendarAdapter();
-        compositeDisposable.add(
-                service.getEvents()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                response -> calendarAdapter.setData(mapEvents(response.getData())),
-                                Throwable::printStackTrace)
-        );
+        showUpdatedEvents();
 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(calendarAdapter);
+    }
+
+    public void showUpdatedEvents() {
+        Log.d(TAG, "showUpdatedEvents: ran start");
+        compositeDisposable.add(
+                service.getEvents()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    calendarAdapter.setData(mapEvents(response.getData()));
+                                    Log.d(TAG, "showUpdatedEvents: ran rx service");
+                                },
+                                Throwable::printStackTrace)
+        );
     }
 
     @Override

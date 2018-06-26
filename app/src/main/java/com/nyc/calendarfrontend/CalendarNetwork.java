@@ -1,5 +1,9 @@
 package com.nyc.calendarfrontend;
 
+import com.nyc.calendarfrontend.models.EventModel;
+import com.nyc.calendarfrontend.models.EventPostedResponse;
+import com.nyc.calendarfrontend.models.EventResponse;
+
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -14,5 +18,5 @@ public interface CalendarNetwork {
     Observable<EventResponse> getEvents();
 
     @POST("events")
-    void postEvent(@Body EventModel eventModel);
+    Observable<EventPostedResponse> postEvent(@Body EventModel eventModel);
 }
