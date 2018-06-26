@@ -14,6 +14,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1"/>
+        <TextView
+            android:id="@+id/event1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Sho..."
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/event2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Sho..."
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/event3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Sho..."
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/more_events"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=". . ."
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/add_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+
+
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

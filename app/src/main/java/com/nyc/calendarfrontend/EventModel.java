@@ -12,6 +12,14 @@ class EventModel {
     private int day;
     private String time;
 
+    public EventModel(String title, String body, String month, int day, String time) {
+        this.title = title;
+        this.body = body;
+        this.month = month;
+        this.day = day;
+        this.time = time;
+    }
+
     public String getTitle() {
         return title;
     }

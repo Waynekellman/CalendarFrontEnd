@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -20,28 +21,49 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
 
     RecyclerView recyclerView;
+    private CompositeDisposable compositeDisposable;
+    private CalendarNetwork service;
+    private CalendarComponent component;
+    private CalendarAdapter calendarAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        component = ((CalendarApplication) this.getApplication()).getComponent();
         recyclerView = findViewById(R.id.recyclerview);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
-        CalendarComponent component = DaggerCalendarComponent.create();
-        CalendarNetwork service = component.service();
-        service.getEvents()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(response -> {
-                    CalendarAdapter adapter = new CalendarAdapter(mapEvents(response.getData()));
-                    recyclerView.setAdapter(adapter);
-
-                }, Throwable::printStackTrace);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
+        service = component.service();
+        compositeDisposable = new CompositeDisposable();
     }
-    private Map<Integer, List<EventModel>> mapEvents(List<EventModel> events){
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        calendarAdapter = new CalendarAdapter();
+        compositeDisposable.add(
+                service.getEvents()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> calendarAdapter.setData(mapEvents(response.getData())),
+                                Throwable::printStackTrace)
+        );
+
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(calendarAdapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        compositeDisposable.dispose();
+    }
+
+    private Map<Integer, List<EventModel>> mapEvents(List<EventModel> events) {
         Map<Integer, List<EventModel>> mapOfEventAndDays = new HashMap<>();
         for (EventModel e : events) {
             if (mapOfEventAndDays.containsKey(e.getDay())) {
@@ -51,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 List<EventModel> eventList = new ArrayList<>();
                 eventList.add(e);
-                mapOfEventAndDays.put(e.getDay(),eventList);
+                mapOfEventAndDays.put(e.getDay(), eventList);
             }
         }
         return mapOfEventAndDays;
