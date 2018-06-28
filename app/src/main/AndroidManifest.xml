@@ -8,7 +8,7 @@
         android:name=".CalendarApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="February"
+        android:label="Calendar Month"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.EventsActivity"></activity>
+        <activity
+            android:name=".views.EventsActivity"
+            android:label="Events"/>
     </application>
 
 </manifest>
